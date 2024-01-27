@@ -57,21 +57,33 @@ void compute_and_print(int index1, int index2, int index3) {
         printf("Invalid indices. Please enter valid indices for both Pokémon type and move type.\n");
         return;
     }
-    
     float effectiveness = compute(index1, index2, index3);
+    
     if (effectiveness != -1.0) {
-        printf("Computing effectiveness of %s move against %s type:\n%.1f ", pokemon_types[index3], pokemon_types[index1], effectiveness);
-        if (effectiveness == 0.25 || effectiveness == 0.5){
-            printf("- It's not very effective.\n");
+        if (index2 == -1) {
+            printf("Computing effectiveness of %s move against %s type:\n", pokemon_types[index3], pokemon_types[index1]);
+        } else {
+            printf("Computing effectiveness of %s move against %s, %s type:\n", pokemon_types[index3], pokemon_types[index1], pokemon_types[index2]);
         }
-        else if (effectiveness == 2.0 || effectiveness == 4.0){
-            printf("- It's super effective!\n");
-        }
-        else if (effectiveness == 0.0) printf("- The defending Pokemon is immune!\n");
     } else {
         printf("Invalid indices\n");
+        return;
+    }
+    
+    if (effectiveness != -1.0) {
+        if (effectiveness == 0.25 || effectiveness == 0.5) {
+            printf("%.2f - It's not very effective.\n", effectiveness);
+        } else if (effectiveness == 2.0 || effectiveness == 4.0) {
+            printf("%.1f - It's super effective!\n", effectiveness);
+        } else if (effectiveness == 0.0) {
+            printf("%.1f - The defending Pokemon is immune!\n", effectiveness);
+        }
+        else if (effectiveness == 1.0) {
+            printf("%.1f - Neutral\n", effectiveness);
+        }
     }
 }
+
 
 int main() {
     char cmd; // Command character
@@ -123,6 +135,7 @@ int main() {
                 break;
             case 'c':
                 compute_and_print(index1, index2, index3);
+                //else compute_and_print2(index1, index2, index3);
                 break;
             case 'q':
                 printf("Bye Bye! \n");
