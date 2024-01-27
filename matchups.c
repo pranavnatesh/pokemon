@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define NUM_TYPES 18 // Number of Pokémon types
 #define MAXLENGTH 9 // Maximum length of a Pokémon type name
@@ -84,6 +85,105 @@ void compute_and_print(int index1, int index2, int index3) {
     }
 }
 
+void listOffense(int index1, char ***SE, char ***NVE, char ***Im) {
+    // Allocate memory for SE, NVE, and Im arrays
+    *SE = malloc(NUM_TYPES * sizeof(char *));
+    *NVE = malloc(NUM_TYPES * sizeof(char *));
+    *Im = malloc(NUM_TYPES * sizeof(char *));
+
+
+    // Check if memory allocation succeeded
+    if (*SE == NULL || *NVE == NULL || *Im == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return;
+    }
+
+    // Populate SE, NVE, and Im arrays
+    int se_count = 0, nve_count = 0, im_count = 0;
+    for (int i = 0; i < NUM_TYPES; i++) {
+        if (type_chart[index1][i] == 2.0) {
+            (*SE)[se_count] = strdup(pokemon_types[i]);
+            se_count++;
+        } else if (type_chart[index1][i] == 0.5) {
+            (*NVE)[nve_count] = strdup(pokemon_types[i]);
+            nve_count++;
+        } else if (type_chart[index1][i] == 0.0) {
+            (*Im)[im_count] = strdup(pokemon_types[i]);
+            im_count++;
+        }
+    }
+    
+    // Print SE, NVE, and Im arrays side by side with 20 characters spacing
+    printf("Offensive Characteristics of %s Type\n", pokemon_types[index1]);
+    printf("%-20s%-20s%-20s\n", "Super Effective", "Not Very Effective", "Immune");
+    for (int j = 0; j < se_count || j < nve_count || j < im_count; j++) {
+        if (j < se_count) {
+            printf("%-20s", (*SE)[j]); // Aligns SE column
+        } else {
+            printf("%-20s", ""); // Print an empty string with width 20
+        }
+        if (j < nve_count) {
+            printf("%-20s", (*NVE)[j]); // Aligns NVE column
+        } else {
+            printf("%-20s", ""); // Print an empty string with width 20
+        }
+        if (j < im_count) {
+            printf("%-20s\n", (*Im)[j]); // Aligns Im column
+        } else {
+            printf("\n"); // Move to the next line
+        }
+    }
+}
+
+void listDefense(int index1, char ***SE, char ***NVE, char ***Im) {
+    // Allocate memory for SE, NVE, and Im arrays
+    *SE = malloc(NUM_TYPES * sizeof(char *));
+    *NVE = malloc(NUM_TYPES * sizeof(char *));
+    *Im = malloc(NUM_TYPES * sizeof(char *));
+
+
+    // Check if memory allocation succeeded
+    if (*SE == NULL || *NVE == NULL || *Im == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return;
+    }
+
+    // Populate SE, NVE, and Im arrays
+    int se_count = 0, nve_count = 0, im_count = 0;
+    for (int i = 0; i < NUM_TYPES; i++) {
+        if (type_chart[i][index1] == 2.0) {
+            (*SE)[se_count] = strdup(pokemon_types[i]);
+            se_count++;
+        } else if (type_chart[i][index1] == 0.5) {
+            (*NVE)[nve_count] = strdup(pokemon_types[i]);
+            nve_count++;
+        } else if (type_chart[i][index1] == 0.0) {
+            (*Im)[im_count] = strdup(pokemon_types[i]);
+            im_count++;
+        }
+    }
+    
+    // Print SE, NVE, and Im arrays side by side with 20 characters spacing
+    printf("Defensive Characteristics of %s Type\n", pokemon_types[index1]);
+    printf("%-20s%-20s%-20s\n", "Super Effective", "Not Very Effective", "Immune");
+    for (int j = 0; j < se_count || j < nve_count || j < im_count; j++) {
+        if (j < se_count) {
+            printf("%-20s", (*SE)[j]); // Aligns SE column
+        } else {
+            printf("%-20s", ""); // Print an empty string with width 20
+        }
+        if (j < nve_count) {
+            printf("%-20s", (*NVE)[j]); // Aligns NVE column
+        } else {
+            printf("%-20s", ""); // Print an empty string with width 20
+        }
+        if (j < im_count) {
+            printf("%-20s\n", (*Im)[j]); // Aligns Im column
+        } else {
+            printf("\n"); // Move to the next line
+        }
+    }
+}
 
 int main() {
     char cmd; // Command character
@@ -92,13 +192,25 @@ int main() {
     int index2 = -1; // Index of Secondary type
     int index3 = -1; // Index of move type
     
+    char **SE, **NVE, **Im;
+    
    do {
         // Ask for command
-        printf("Enter command (t, s, m, c, q): ");
+        printf("Enter command (h for Help): ");
         scanf(" %c", &cmd);
         
         // Process command using switch-case
         switch(cmd) {
+            case 'h':
+                printf("Available commands:\n");
+                printf("t: Enter Primary type\n");
+                printf("s: Enter Secondary type\n");
+                printf("m: Enter move type\n");
+                printf("c: Compute effectiveness\n");
+                printf("o: List offensive characteristics\n");
+                printf("d: List defensive characteristics\n");
+                printf("q: Quit the program\n");
+                break;
             case 't':
                 printf("Enter Primary type: ");
                 scanf("%s", type);
@@ -135,10 +247,33 @@ int main() {
                 break;
             case 'c':
                 compute_and_print(index1, index2, index3);
-                //else compute_and_print2(index1, index2, index3);
+                break;
+            case 'o':
+                listOffense(index1, &SE, &NVE, &Im);
+                break;
+            case 'd':
+                listDefense(index1, &SE, &NVE, &Im);
                 break;
             case 'q':
-                printf("Bye Bye! \n");
+                if (SE != NULL) {
+                    for (int i = 0; i < NUM_TYPES; i++) {
+                        free(SE[i]);
+                    }
+                    free(SE);
+                }
+                if (NVE != NULL) {
+                    for (int i = 0; i < NUM_TYPES; i++) {
+                        free(NVE[i]);
+                    }
+                    free(NVE);
+                }
+                if (Im != NULL) {
+                    for (int i = 0; i < NUM_TYPES; i++) {
+                        free(Im[i]);
+                    }
+                    free(Im);
+                }
+                printf("Bye Bye!\n");
                 break;
             default:
                 printf("Unknown command. Enter 'h' for help.\n");
