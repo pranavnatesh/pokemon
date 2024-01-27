@@ -268,6 +268,11 @@ int main() {
     
     char **SE, **NVE, **Im;
     
+printf("***********************************************\n");
+printf("*      POKEMON TYPE MATCHUP CALCULATOR        *\n");
+printf("*               (c) acertainfruit 2024        *\n");
+printf("***********************************************\n");
+
    do {
         // Ask for command
         printf("Enter command (h for Help): ");
