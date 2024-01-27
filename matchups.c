@@ -311,6 +311,11 @@ int main() {
                 } else {
                     printf("Type not found\n");
                 }
+                if (index2 == index1){
+                    printf("Secondary type cannot be the same as the primary type.\n");
+                    index2 = -1;
+                    break;
+                }
                 break;
             case 'm':
                 if (index1 == -1) {
@@ -336,6 +341,10 @@ int main() {
                 listDefense(index1, &SE, &NVE, &Im);
                 break;
             case 'l':
+                 if (index2 == -1) {
+                    printf("No Secondary type entered yet. Please enter a type using 's' command first.\n");
+                    break;
+                 }
                 combo(index1,index2, &SE, &NVE, &Im);
                 break;
             case 'x':
