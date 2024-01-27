@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#define ANSI_BOLD "\033[1m"
-#define ANSI_RESET "\033[0m"
 
 #define NUM_TYPES 18 // Number of Pokémon types
 #define MAXLENGTH 9 // Maximum length of a Pokémon type name
