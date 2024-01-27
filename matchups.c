@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#define ANSI_BOLD "\033[1m"
+#define ANSI_RESET "\033[0m"
 
 #define NUM_TYPES 18 // Number of Pokémon types
 #define MAXLENGTH 9 // Maximum length of a Pokémon type name
@@ -281,7 +283,7 @@ int main() {
                 printf("c: Compute effectiveness\n");
                 printf("o: list Offensive characteristics\n");
                 printf("d: list Defensive characteristics\n");
-                printf("l: List dual type characteristics\n");
+                printf("l: List dual type characteristics (* = 4x, _ = 0.25x)\n");
                 printf("x: clear the secondary type\n");
                 printf("f: show speciFied type(s)\n");
                 printf("q: Quit the program\n");
