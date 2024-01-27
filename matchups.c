@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#define ANSI_BOLD "\033[1m"
-#define ANSI_RESET "\033[0m"
 
 #define NUM_TYPES 18 // Number of Pokémon types
 #define MAXLENGTH 9 // Maximum length of a Pokémon type name
@@ -187,7 +185,6 @@ void listDefense(int index1, char ***SE, char ***NVE, char ***Im) {
     }
 }
 
-
 void combo(int index1, int index2, char ***SE, char ***NVE, char ***Im){
     // Allocate memory for SE, NVE, and Im arrays
     *SE = malloc(NUM_TYPES * sizeof(char *));
@@ -278,12 +275,15 @@ int main() {
         switch(cmd) {
             case 'h':
                 printf("Available commands:\n");
-                printf("t: Enter Primary type\n");
-                printf("s: Enter Secondary type\n");
-                printf("m: Enter move type\n");
+                printf("t: enter Primary type\n");
+                printf("s: enter Secondary type\n");
+                printf("m: enter Move type\n");
                 printf("c: Compute effectiveness\n");
-                printf("o: List offensive characteristics\n");
-                printf("d: List defensive characteristics\n");
+                printf("o: list Offensive characteristics\n");
+                printf("d: list Defensive characteristics\n");
+                printf("l: List dual type characteristics\n");
+                printf("x: clear the secondary type\n");
+                printf("f: show speciFied type(s)\n");
                 printf("q: Quit the program\n");
                 break;
             case 't':
@@ -297,6 +297,10 @@ int main() {
                 }
                 break;
             case 's':
+                if (index1 == -1) {
+                    printf("No Primary type entered yet. Please enter a type using 't' command first.\n");
+                    break;
+                 }
                 printf("Enter Secondary type: ");
                 scanf("%s", type);
                 index2 = findIndex(type);
@@ -308,7 +312,7 @@ int main() {
                 break;
             case 'm':
                 if (index1 == -1) {
-                    printf("No Pokémon type entered yet. Please enter a type using 't' command first.\n");
+                    printf("No Primary type entered yet. Please enter a type using 't' command first.\n");
                     break;
                 }
                 printf("Enter move type: ");
@@ -331,6 +335,21 @@ int main() {
                 break;
             case 'l':
                 combo(index1,index2, &SE, &NVE, &Im);
+                break;
+            case 'x':
+                index2 = -1;
+                printf("Secondary type has been cleared.\n");
+                break;
+            case 'f':
+                if (index1 == -1) {
+                    printf("No Primary type entered yet. Please enter a type using 't' command first.\n");
+                    break;
+                }
+                else if (index2 == -1){
+                    printf("The specified type is %s.\n", pokemon_types[index1]);
+                    break;
+                }
+                else printf("The specified type is %s, %s.\n", pokemon_types[index1], pokemon_types[index2]);
                 break;
             case 'q':
                 if (SE != NULL) {
