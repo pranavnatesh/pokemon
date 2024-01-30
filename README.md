@@ -1,8 +1,9 @@
 # Pokemon Type Matchup Calculator
 
-Calculate the type effectiveness of a move on a particular (dual type).
+Calculate the type effectiveness of a move on a particular (dual) type.
+Display the offensive and defensive type matchups for a (Dual) type in a table.
 
-But that wasn't enough so I had to make it display the type chart in a table.
+Pranav 2024 
 
 ## Available commands:
 - **t:** Enter Primary type
@@ -15,8 +16,5 @@ But that wasn't enough so I had to make it display the type chart in a table.
 - **x:** Clear the secondary type
 - **f:** Show the speciFied type(s)
 - **q:** Quit the program
-
-
-My life is pain.
 
 
